@@ -1,5 +1,6 @@
 package com.ecommerce.ecommerce.pojo;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -11,19 +12,33 @@ import javax.persistence.Table;
 public class Role {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
+	
 	private int roleId;
 	private String name;
+	
+	
 	
 	public Role(int roleId) {
 		super();
 		this.roleId = roleId;
 	}
 	
+	
+	
 	public Role() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+	public Role(String name) {
+		this.name = name;
+	}
 
+	@Override
+	public String toString() {
+		return "Role [roleId=" + roleId + ", name=" + name + "]";
+	}
+
+	@Column(name="roleId")
 	public int getRoleId() {
 		return roleId;
 	}
