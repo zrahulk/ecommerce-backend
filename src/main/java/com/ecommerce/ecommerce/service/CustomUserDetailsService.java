@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import com.ecommerce.ecommerce.dao.UserRepo;
 import com.ecommerce.ecommerce.pojo.CustomUserDetails;
 import com.ecommerce.ecommerce.pojo.User;
+import org.springframework.transaction.annotation.Transactional;
+
 @Service
 public class CustomUserDetailsService implements UserDetailsService{
 
@@ -22,13 +24,18 @@ public class CustomUserDetailsService implements UserDetailsService{
 			Optional<User> optional
 						= userRepo.findByEmail(email);
 			optional.orElseThrow(
-					()->new UsernameNotFoundException("email addresss not found"));
-			CustomUserDetails userDetails = optional.map(CustomUserDetails::new ).get();
-			System.out.println(userDetails.getRoles());
-			return  userDetails;
+					()->new UsernameNotFoundException("user name not found"));
+			return optional.map(CustomUserDetails::new ).get();
+
+
 					
-			
-		
+	}
+
+	@Transactional
+	public CustomUserDetails loadUserById(Long id) {
+		CustomUserDetails user =  new CustomUserDetails(userRepo.getOne(id));
+	if(user==null) throw new UsernameNotFoundException("User not Found");
+	return user;
 	}
 	
 	

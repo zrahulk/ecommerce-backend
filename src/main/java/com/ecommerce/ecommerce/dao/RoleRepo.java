@@ -10,4 +10,5 @@ import com.ecommerce.ecommerce.pojo.Role;
 public interface RoleRepo extends JpaRepository<Role, Integer> {
 
 	Optional<Role> findByName(String name);
+	Role getByName(String name);
 }

@@ -5,45 +5,39 @@ import java.util.LinkedList;
 import java.util.Set;
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.*;
 
-import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+import com.ecommerce.ecommerce.customAnnotaions.Unique;
 import org.hibernate.annotations.NaturalId;
 
 
 
 @Entity
 @Table(name="users")
+
 public class User {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="userId")
 	private long userId;
-	@NotBlank
+	@NotBlank(message = "Full Name should not be blank")
 	private String name;
 	
-	@Column(unique  = true)
-	@NotBlank
-	@Email
+	@NotBlank(message = "Email should not be blank")
+	@Email(message = "It should be email")
+	@Unique(message = "EmailId exist")
 	@NaturalId
 	private String email;
+	@NotBlank(message = "Password should not be black")
 	private String password;
-	@Column(unique = true, length=10, name="phoneNumber")
-	@Size(max= 10 ,min=10)
+	@Column(length=10, name="phone_number")
+	@Size(max= 10 ,min=10, message = "Phone number should be 10 digit long")
 	private String phoneNumber;
+
 	private int active;
 	
 	@ManyToMany(cascade = CascadeType.ALL,fetch=FetchType.EAGER)
@@ -65,7 +59,7 @@ public class User {
 		this.addresses = addresses;
 	
 	}
-	@Column(name="areaCode")
+	@Column(name="area_code")
 	private String areaCode;
 	@Column(name="createTs")
 	private Long createTs;
@@ -73,12 +67,12 @@ public class User {
 		super();
 		this.userId = userId;
 	}
-	public User(@NotBlank @Email String email, String password) {
+	public User(String email, String password) {
 		super();
 		this.email = email;
 		this.password = password;
 	}
-	public User(@Size(max = 10, min = 10) String phoneNumber,
+	public User(String phoneNumber,
 			String password, String areaCode) {
 		super();
 		this.password = password;
@@ -86,13 +80,25 @@ public class User {
 		this.areaCode = areaCode;
 		
 	}
-	
+
+	public User(String name,
+				String email,
+				String password,
+				String phoneNumber,
+				String areaCode) {
+		this.name = name;
+		this.email = email;
+		this.password = password;
+		this.phoneNumber = phoneNumber;
+		this.areaCode = areaCode;
+	}
+
 	public User() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public User(@NotBlank String name, @NotBlank @Email String email, String password,
-			@Size(max = 10, min = 10) String phoneNumber, Set<Role> roles, List<Address> addresses, String areaCode,
+	public User( String name, String email, String password,
+			String phoneNumber, Set<Role> roles, List<Address> addresses, String areaCode,
 			Long createTs) {
 		super();
 		
@@ -121,8 +127,8 @@ public class User {
 	}
 	
 	
-	public User(@NotBlank String name, @NotBlank @Email String email, String password,
-			@Size(max = 10, min = 10) String phoneNumber, String areaCode, Long createTs) {
+	public User(String name, String email, String password,
+			 String phoneNumber, String areaCode, Long createTs) {
 		super();
 		this.name = name;
 		this.email = email;
@@ -135,11 +141,13 @@ public class User {
 	
 	
 	
-	public User( @NotBlank String name, 
-			@NotBlank @Email String email, String password,
-			@Size(max = 10, min = 10) String phoneNumber,
-			Set<Role> roles, String areaCode, 
-			Long createTs) {
+	public User( String name,
+				 String email,
+				 String password,
+				 String phoneNumber,
+				 Set<Role> roles,
+				 String areaCode,
+				 Long createTs) {
 		super();
 		
 		this.name = name;
